@@ -1,12 +1,83 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Image Coordinate</title>
-    </head>
-    <headear>
-        <h1>img-coordinates</h1>
-    </headear>
-    <body>
-        
-    </body>
+
+<head>
+    <title>Image Coordinate</title>
+    <style>
+        #uploadedImage {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<headear>
+    <h1>img-coordinates</h1>
+</headear>
+
+<body>
+    <h2>Image Upload</h2>
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <h2>Uploaded Image</h2>
+    <div id="imageContainer">
+        <img style="height: 300px;" id="uploadedImage" src="" alt="Uploaded Image">
+    </div>
+
+    <script>
+        var fileInput = document.getElementById("imageUpload");
+        var uploadedImage = document.getElementById("uploadedImage");
+        var imageContainer = document.getElementById("imageContainer");
+
+        var f = false;
+
+        fileInput.addEventListener("change", function () {
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                uploadedImage.src = e.target.result;
+                document.getElementById("coord_list").innerHTML = "";
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        function handleMouseMove(event) {
+            var rect = uploadedImage.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            //console.log("Mouse coordinates (hover):", x, y);
+            document.getElementById("coord").innerHTML = "Mouse coordinates: " + x + " " + y;
+        }
+
+        function handleMouseClick(event) {
+            var rect = uploadedImage.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            //console.log("Mouse coordinates (click):", x, y);
+            if(!f) {
+                document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML + "From: " + x + " " + y;
+                f = true;
+            }else {
+                document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML + "<br>To: " + x + " " + y + "<br>---<br>";
+                f = false;
+            }
+            document.getElementById("list").scrollTop = document.getElementById("list").scrollHeight;
+        }
+
+        uploadedImage.addEventListener("mousemove", handleMouseMove);
+        uploadedImage.addEventListener("click", handleMouseClick);
+    </script>
+
+
+    <fieldset>
+        <legend>Coordinates</legend>
+        <p id="coord"></p>
+    </fieldset>
+    <fieldset id="list" style="height: 150px; overflow:scroll;">
+        <legend>Saved Coordinates</legend>
+        <p id="coord_list"></p>
+    </fieldset>
+</body>
+
 </html>
