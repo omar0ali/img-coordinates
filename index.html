@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
         #uploadedImage {
-            max-width: 100%;
-            height: auto;
+            max-height: 320px;
+            width: auto;
         }
     </style>
 </head>
@@ -21,7 +21,7 @@
 
     <h2>Uploaded Image</h2>
     <div id="imageContainer">
-        <img style="height: 300px;" id="uploadedImage" src="" alt="Uploaded Image">
+        <img id="uploadedImage" src="" alt="Uploaded Image">
     </div>
 
     <script>
@@ -56,10 +56,10 @@
             var x = event.clientX - rect.left;
             var y = event.clientY - rect.top;
             //console.log("Mouse coordinates (click):", x, y);
-            if(!f) {
+            if (!f) {
                 document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML + "From: " + x + " " + y;
                 f = true;
-            }else {
+            } else {
                 document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML + "<br>To: " + x + " " + y + "<br>---<br>";
                 f = false;
             }
