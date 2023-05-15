@@ -21,7 +21,10 @@
 
     <h2>Uploaded Image</h2>
     <div id="imageContainer">
-        <img id="uploadedImage" src="" alt="Uploaded Image">
+        <img id="uploadedImage" src="" alt="Uploaded Image" usemap="#uploadedImage">
+        <map id="mapped" name="uploadedImage">
+
+        </map>
     </div>
 
     <script>
@@ -34,10 +37,12 @@
         fileInput.addEventListener("change", function () {
             var file = fileInput.files[0];
             var reader = new FileReader();
-
+            var coordinates = "";
             reader.onload = function (e) {
                 uploadedImage.src = e.target.result;
-                document.getElementById("coord_list").innerHTML = "";
+                document.getElementById("coord_list").innerHTML = "<*map name='uploadedImage'><br>";
+                document.getElementById("mapped").innerHTML ="";
+                
             };
 
             reader.readAsDataURL(file);
@@ -56,12 +61,25 @@
             var x = event.clientX - rect.left;
             var y = event.clientY - rect.top;
             //console.log("Mouse coordinates (click):", x, y);
+            //Will ask for label on each selected pair coordinate.
+            //<area shape="rect" coords="121,20,183,91" title="Head" href="">
+            var mapArea = document.getElementById("mapped");
+
+
             if (!f) {
-                document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML + "From: " + x + " " + y;
+                coordinates = x + "," + y + ",";
+                document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML +
+                    "<*area shape='rect' coords='" + x + "," + y + ",";
                 f = true;
             } else {
-                document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML + "<br>To: " + x + " " + y + "<br>---<br>";
+                coordinates = coordinates + x + "," + y;
+                var title = prompt("Enter the title for the area:");
+                document.getElementById("coord_list").innerHTML = document.getElementById("coord_list").innerHTML +
+                    x + "," + y + "' title='" + title + "' ><br>";
                 f = false;
+
+                //maping
+                mapArea.innerHTML = mapArea.innerHTML + "<area shape='rect' coords='" + coordinates + "' title='" + title + "' ><br>";
             }
             document.getElementById("list").scrollTop = document.getElementById("list").scrollHeight;
         }
