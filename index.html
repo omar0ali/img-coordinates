@@ -3,6 +3,7 @@
 
 <head>
     <title>Image Coordinate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
         #uploadedImage {
             max-width: 100%;
@@ -64,6 +65,8 @@
             }
             document.getElementById("list").scrollTop = document.getElementById("list").scrollHeight;
         }
+
+        //adding functionallity to write map tag with the coordinates.
 
         uploadedImage.addEventListener("mousemove", handleMouseMove);
         uploadedImage.addEventListener("click", handleMouseClick);
