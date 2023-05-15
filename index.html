@@ -9,6 +9,16 @@
             max-height: 320px;
             width: auto;
         }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .rectangle-overlay {
+            position: absolute;
+            border: 1px solid red;
+        }
     </style>
 </head>
 <headear>
@@ -16,16 +26,16 @@
 </headear>
 
 <body>
-    <h2>Image Upload</h2>
     <input type="file" id="imageUpload" accept="image/*">
 
     <h2>Uploaded Image</h2>
-    <div id="imageContainer">
+    <div class="imageContainer" id="imageContainer">
         <img id="uploadedImage" src="" alt="Uploaded Image" usemap="#uploadedImage">
         <map id="mapped" name="uploadedImage">
 
         </map>
     </div>
+
 
     <script>
         var fileInput = document.getElementById("imageUpload");
@@ -41,8 +51,8 @@
             reader.onload = function (e) {
                 uploadedImage.src = e.target.result;
                 document.getElementById("coord_list").innerHTML = "<*map name='uploadedImage'><br>";
-                document.getElementById("mapped").innerHTML ="";
-                
+                document.getElementById("mapped").innerHTML = "";
+
             };
 
             reader.readAsDataURL(file);
@@ -80,6 +90,18 @@
 
                 //maping
                 mapArea.innerHTML = mapArea.innerHTML + "<area shape='rect' coords='" + coordinates + "' title='" + title + "' ><br>";
+                //Draw
+                var div = document.createElement("div");
+                div.className = "rectangle-overlay";
+                var all = coordinates.split(",");
+                var top = ""+(parseInt(all[1])+168);
+                all[3] = parseFloat(all[3]);
+                var height = ""+(all[3]-all[1]);
+                var width = ""+(all[2]-all[0]);
+                var left = ""+(parseInt(all[0])+5);
+                div.style = "top: "+top+"px; left: "+left+"px; width: "+width+"px; height: "+height+"px;";
+                div.title = title;
+                imageContainer.appendChild(div);
             }
             document.getElementById("list").scrollTop = document.getElementById("list").scrollHeight;
         }
