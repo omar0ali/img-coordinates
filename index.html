@@ -52,6 +52,13 @@
                 uploadedImage.src = e.target.result;
                 document.getElementById("coord_list").innerHTML = "<*map name='uploadedImage'><br>";
                 document.getElementById("mapped").innerHTML = "";
+                // Get all elements with the class name "rectangle-overlay"
+                const elements = document.getElementsByClassName("rectangle-overlay");
+                const elementsArray = Array.from(elements);
+                elementsArray.forEach(element => {
+                    element.remove();
+                });
+
             };
 
             reader.readAsDataURL(file);
@@ -93,12 +100,12 @@
                 var div = document.createElement("div");
                 div.className = "rectangle-overlay";
                 var all = coordinates.split(",");
-                var top = ""+(parseInt(all[1])+168);
+                var top = "" + (parseInt(all[1]) + 168);
                 all[3] = parseFloat(all[3]);
-                var height = ""+(all[3]-all[1]);
-                var width = ""+(all[2]-all[0]);
-                var left = ""+(parseInt(all[0])+5);
-                div.style = "top: "+top+"px; left: "+left+"px; width: "+width+"px; height: "+height+"px;";
+                var height = "" + (all[3] - all[1]);
+                var width = "" + (all[2] - all[0]);
+                var left = "" + (parseInt(all[0]) + 5);
+                div.style = "top: " + top + "px; left: " + left + "px; width: " + width + "px; height: " + height + "px;";
                 div.title = title;
                 imageContainer.appendChild(div);
             }
