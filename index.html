@@ -5,6 +5,7 @@
     <title>Image Coordinate</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
+
         #uploadedImage {
             max-height: 320px;
             width: auto;
@@ -19,6 +20,23 @@
             position: absolute;
             border: 1px solid red;
         }
+
+        fieldset {
+            border: solid 3px;
+            text-align: left;
+            font-weight: 500;
+            padding: 10px;
+            box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
+        }
+        fieldset legend {
+            text-align: left;
+            font-weight: 500;
+            font-size: 18px;
+        }
+        button {
+            box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5)
+        }
+
     </style>
 </head>
 <headear>
@@ -35,12 +53,13 @@
 
         </map>
     </div>
-
+    <br>
 
     <script>
         var fileInput = document.getElementById("imageUpload");
         var uploadedImage = document.getElementById("uploadedImage");
         var imageContainer = document.getElementById("imageContainer");
+        var status = document.getElementById("status");
 
         var f = false;
 
@@ -49,6 +68,7 @@
             var reader = new FileReader();
             var coordinates = "";
             reader.onload = function (e) {
+                //reset
                 uploadedImage.src = e.target.result;
                 document.getElementById("coord_list").innerHTML = "<*map name='uploadedImage'><br>";
                 document.getElementById("mapped").innerHTML = "";
@@ -112,8 +132,26 @@
             document.getElementById("list").scrollTop = document.getElementById("list").scrollHeight;
         }
 
-        //adding functionallity to write map tag with the coordinates.
 
+        //Copying to the clipboard will require preparing the text by removing any unnecessary tags.
+        function copy() {
+            var code = document.getElementById("coord_list");
+            let text = code.innerHTML
+                .replace(/\*/g, '')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/<br>/g, '');
+            text = text + "</map>"
+            navigator.clipboard.writeText(text);
+            document.getElementById("btnCopy").innerHTML = "Copied!";
+            setInterval(resetName, 3000);
+            function resetName() {
+                document.getElementById("btnCopy").innerHTML = "Copy"
+            }
+        }
+
+        //adding functionallity to write map tag with the coordinates.
         uploadedImage.addEventListener("mousemove", handleMouseMove);
         uploadedImage.addEventListener("click", handleMouseClick);
     </script>
@@ -123,9 +161,11 @@
         <legend>Coordinates</legend>
         <p id="coord"></p>
     </fieldset>
+    <br>
     <fieldset id="list" style="height: 150px; overflow:scroll;">
         <legend>Saved Coordinates</legend>
         <p id="coord_list"></p>
+        <button id="btnCopy" type="button" onclick="copy();">Copy</button>
     </fieldset>
 </body>
 
